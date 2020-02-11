@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Card : MonoBehaviour {
-    public float threat;
-    public float value;
-    public bool playerOwned;
+public class TileScript : MonoBehaviour {
+    public Unit occupier;
 	// Use this for initialization
 	void Start () {
 		
