@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour {
     [SerializeField]
     GameObject currentObject;
+
+    public GameObject heldCard;
 	// Use this for initialization
 	void Start () {
 		
@@ -12,11 +14,40 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButtonDown(0)) {
+        if (heldCard) {
+            heldCard.transform.position = GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
+            if (Input.GetMouseButtonDown(0)) {
+                Summon();
+            }
+        }
+
+        if (Input.GetMouseButtonDown(0) && !heldCard) {
             RaycastHit hit;
             if (Physics.Raycast(GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit)) {
-                if (hit.transform.GetComponent<Unit>() && hit.transform.GetComponent<Card>().playerOwned) {
-                    currentObject = hit.transform.gameObject;
+                Card hitCard = hit.transform.GetComponent<Card>();
+                if (hitCard) {
+                    if (hitCard.playerOwned) {
+                        if (hitCard.onField) {
+                            currentObject = hit.transform.gameObject;
+                        }
+                        else {
+                            heldCard = hit.transform.gameObject;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void Summon() {
+        RaycastHit hit;
+        LayerMask mask = ~(LayerMask.NameToLayer("Card"));
+        if (Physics.Raycast(GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit)) {
+            TileScript hitTile = hit.transform.GetComponent<TileScript>();
+            if (hitTile) {
+                if (hitTile.spawnPoint) {
+                    heldCard.GetComponent<Card>().Summon(hitTile.position);
+                    heldCard = null;
                 }
             }
         }

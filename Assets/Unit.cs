@@ -3,17 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Unit : Card {
-    [SerializeField]
-    bool onField;
-    [SerializeField]
-    Field field;
-
-    public Vector2 position;
     public int damage;
     public int health;
 
 	// Use this for initialization
-	void Start () {
+	override protected void Start () {
+        base.Start();
         value = damage * health;
 	}
 	
@@ -24,10 +19,8 @@ public class Unit : Card {
         }
 	}
 
-    void Move() {
-        transform.position = field.tiles[(int)position.x, (int)position.y].transform.position;
-        threat = value * Mathf.Pow((7 - position.y), 2);
-        field.tiles[(int)position.x, (int)position.y].GetComponent<TileScript>().occupier = this;
+    override public void Move() {
+        base.Move();
     }
 
     public void Forward() {
