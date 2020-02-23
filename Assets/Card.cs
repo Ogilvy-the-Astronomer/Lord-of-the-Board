@@ -18,7 +18,7 @@ abstract public class Card : MonoBehaviour {
         for (int i = 0; i < transform.childCount; i++) {
             transform.GetChild(i).gameObject.SetActive(onField);
         }
-        print(transform.childCount);
+        //print(transform.childCount);
 
     }
 	
@@ -30,12 +30,12 @@ abstract public class Card : MonoBehaviour {
     virtual public void Move() {
         transform.position = field.tiles[(int)position.x, (int)position.y].transform.position;
         transform.position -= new Vector3(0, transform.position.y + 0.75f, 0);
-        threat = value * Mathf.Pow((7 - position.y), 2);
+        //threat = value * Mathf.Pow((7 - position.y), 2);
         field.tiles[(int)position.x, (int)position.y].GetComponent<TileScript>().occupier = this;
     }
 
     virtual public void Summon(Vector2 _position) {
-        field.cards.Add(gameObject);
+        field.cards.Add(this);
         position = _position;
         onField = true;
         Unit thisUnit = GetComponent<Unit>();

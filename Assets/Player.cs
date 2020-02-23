@@ -6,10 +6,14 @@ public class Player : MonoBehaviour {
     [SerializeField]
     GameObject currentObject;
 
+    Field field;
+
+    public List<Card> deck;
+    public List<Card> hand;
     public GameObject heldCard;
 	// Use this for initialization
 	void Start () {
-		
+        field = Object.FindObjectOfType<Field>();
 	}
 	
 	// Update is called once per frame
@@ -46,6 +50,12 @@ public class Player : MonoBehaviour {
             TileScript hitTile = hit.transform.GetComponent<TileScript>();
             if (hitTile) {
                 if (hitTile.spawnPoint) {
+                    for (int i = 0; i < hand.Count; i++) {
+                        if (hand[i] == heldCard.GetComponent<Card>()) {
+                            hand.RemoveAt(i);
+                            i = hand.Count + 1;
+                        }
+                    }
                     heldCard.GetComponent<Card>().Summon(hitTile.position);
                     heldCard = null;
                 }

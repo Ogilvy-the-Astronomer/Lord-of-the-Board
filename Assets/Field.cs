@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Field : MonoBehaviour {
     public GameObject[,] tiles = new GameObject[7,7];
-    public List<GameObject> cards;
+    public List<Card> cards;
 	// Use this for initialization
 	void Start () {
         for (int i = 0; i < 7; i++) {
