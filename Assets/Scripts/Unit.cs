@@ -23,40 +23,48 @@ public class Unit : Card {
         base.Move();
     }
 
-    public void Forward() {
+    public bool Forward() {
         if (!field.tiles[(int)position.x, (int)position.y - 1].GetComponent<TileScript>().occupier) {
             field.tiles[(int)position.x, (int)position.y].GetComponent<TileScript>().occupier = null;
             if (position.y > 0) {
                 position.y--;
                 Move();
+                return true;
             }
         }
+        return false;
     }
-    public void Back() {
+    public bool Back() {
         if (!field.tiles[(int)position.x, (int)position.y + 1].GetComponent<TileScript>().occupier) {
             field.tiles[(int)position.x, (int)position.y].GetComponent<TileScript>().occupier = null;
             if (position.y < 6) {
                 position.y++;
                 Move();
+                return true;
             }
         }
+        return false;
     }
-    public void Right() {
+    public bool Right() {
         if (!field.tiles[(int)position.x + 1, (int)position.y].GetComponent<TileScript>().occupier) {
             field.tiles[(int)position.x, (int)position.y].GetComponent<TileScript>().occupier = null;
             if (position.x < 6) {
                 position.x++;
                 Move();
+                return true;
             }
         }
+        return false;
     }
-    public void Left() {
+    public bool Left() {
         if (!field.tiles[(int)position.x - 1, (int)position.y].GetComponent<TileScript>().occupier) {
             field.tiles[(int)position.x, (int)position.y].GetComponent<TileScript>().occupier = null;
             if (position.x > 0) {
                 position.x--;
                 Move();
+                return true;
             }
         }
+        return false;
     }
 }

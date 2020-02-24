@@ -112,18 +112,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &17531093 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
-    type: 3}
-  m_PrefabInstance: {fileID: 560936405}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 295838597aada964fb86bf8a2c31729b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &34308184
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,18 +285,6 @@ MonoBehaviour:
   occupier: {fileID: 0}
   spawnPoint: 0
   position: {x: 0, y: 0}
---- !u!114 &53031624 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
-    type: 3}
-  m_PrefabInstance: {fileID: 975716678}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 295838597aada964fb86bf8a2c31729b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &82824314
 GameObject:
   m_ObjectHideFlags: 0
@@ -2241,6 +2217,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
+        type: 3}
+      propertyPath: field
+      value: 
+      objectReference: {fileID: 991494284}
     - target: {fileID: 5269157752179649335, guid: e5f74a5af69639c49a71ad9a72fcec6d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2296,11 +2277,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
-        type: 3}
-      propertyPath: field
-      value: 
-      objectReference: {fileID: 991494284}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5f74a5af69639c49a71ad9a72fcec6d, type: 3}
 --- !u!114 &519467586 stripped
@@ -2586,6 +2562,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
+        type: 3}
+      propertyPath: field
+      value: 
+      objectReference: {fileID: 991494284}
     - target: {fileID: 5269157752179649335, guid: e5f74a5af69639c49a71ad9a72fcec6d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2641,11 +2622,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
-        type: 3}
-      propertyPath: field
-      value: 
-      objectReference: {fileID: 991494284}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5f74a5af69639c49a71ad9a72fcec6d, type: 3}
 --- !u!1 &573770527
@@ -3831,6 +3807,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Middy
       objectReference: {fileID: 0}
+    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
+        type: 3}
+      propertyPath: field
+      value: 
+      objectReference: {fileID: 991494284}
+    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
+        type: 3}
+      propertyPath: playerOwned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5269157752179649335, guid: e5f74a5af69639c49a71ad9a72fcec6d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3886,16 +3872,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
-        type: 3}
-      propertyPath: field
-      value: 
-      objectReference: {fileID: 991494284}
-    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
-        type: 3}
-      propertyPath: playerOwned
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5f74a5af69639c49a71ad9a72fcec6d, type: 3}
 --- !u!1001 &975716678
@@ -3910,6 +3886,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
+        type: 3}
+      propertyPath: field
+      value: 
+      objectReference: {fileID: 991494284}
     - target: {fileID: 5269157752179649335, guid: e5f74a5af69639c49a71ad9a72fcec6d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3965,11 +3946,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
-        type: 3}
-      propertyPath: field
-      value: 
-      objectReference: {fileID: 991494284}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5f74a5af69639c49a71ad9a72fcec6d, type: 3}
 --- !u!1 &991494283
@@ -4953,6 +4929,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
+        type: 3}
+      propertyPath: field
+      value: 
+      objectReference: {fileID: 991494284}
     - target: {fileID: 5269157752179649335, guid: e5f74a5af69639c49a71ad9a72fcec6d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5008,25 +4989,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
-        type: 3}
-      propertyPath: field
-      value: 
-      objectReference: {fileID: 991494284}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5f74a5af69639c49a71ad9a72fcec6d, type: 3}
---- !u!114 &1310621934 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1310621933}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 295838597aada964fb86bf8a2c31729b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1352808273
 GameObject:
   m_ObjectHideFlags: 0
@@ -6740,9 +6704,6 @@ MonoBehaviour:
   ownUnits: []
   Hand:
   - {fileID: 519467586}
-  - {fileID: 1310621934}
-  - {fileID: 53031624}
-  - {fileID: 17531093}
 --- !u!1 &1929419724
 GameObject:
   m_ObjectHideFlags: 0
@@ -7098,6 +7059,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Righty
       objectReference: {fileID: 0}
+    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
+        type: 3}
+      propertyPath: field
+      value: 
+      objectReference: {fileID: 991494284}
+    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
+        type: 3}
+      propertyPath: playerOwned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5269157752179649335, guid: e5f74a5af69639c49a71ad9a72fcec6d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7152,16 +7123,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
-        type: 3}
-      propertyPath: field
-      value: 
-      objectReference: {fileID: 991494284}
-    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
-        type: 3}
-      propertyPath: playerOwned
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5f74a5af69639c49a71ad9a72fcec6d, type: 3}
@@ -7522,6 +7483,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lefty
       objectReference: {fileID: 0}
+    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
+        type: 3}
+      propertyPath: field
+      value: 
+      objectReference: {fileID: 991494284}
+    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
+        type: 3}
+      propertyPath: playerOwned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5269157752179649335, guid: e5f74a5af69639c49a71ad9a72fcec6d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7576,16 +7547,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
-        type: 3}
-      propertyPath: field
-      value: 
-      objectReference: {fileID: 991494284}
-    - target: {fileID: 5269157752179649355, guid: e5f74a5af69639c49a71ad9a72fcec6d,
-        type: 3}
-      propertyPath: playerOwned
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5f74a5af69639c49a71ad9a72fcec6d, type: 3}

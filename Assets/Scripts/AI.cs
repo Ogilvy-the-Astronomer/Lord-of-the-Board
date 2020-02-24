@@ -40,20 +40,8 @@ public class AI : MonoBehaviour {
                 }
             }
         }
-        for (int i = 0; i < playerUnits.Count; i++) {
-            playerUnits[i].threat = playerUnits[i].value * Mathf.Pow((7 - playerUnits[i].position.y), 2);
-            float dist = 0;
-            for (int j = 0; j < ownUnits.Count; j++) {
-                dist = Mathf.Pow(10 - Vector2.Distance(playerUnits[i].position, ownUnits[j].position), 1.15f);
-                playerUnits[i].threat -= dist; //plus ownUnits[j].value modified by some value
-            }
-            //print(playerUnits[i].gameObject.name + " is " + dist + " units away");
-
-            if (playerUnits[i].threat > targetThreat) {
-                target = playerUnits[i];
-                targetThreat = target.threat;
-            }
-        }
+        playerUnits = CalculateThreat();
+        target = playerUnits[0];
         int column = 3;
         if(target) column = (int)target.position.x;
         int cardToSummon = 0;
@@ -67,6 +55,37 @@ public class AI : MonoBehaviour {
             }
 
             Summon(cardToSummon, column);
+        }
+
+        for (int i = 0; i < ownUnits.Count; i++) {
+            Unit closestUnit = playerUnits[0];
+            float closestDistance = 1000;
+            float dist = -1;
+            for (int j = 0; j < playerUnits.Count; j++) {
+                dist = Vector2.Distance(ownUnits[i].position, playerUnits[j].position);
+                if (dist <= 1) continue;
+                else if (dist < closestDistance) {
+                    dist = closestDistance;
+                    closestUnit = playerUnits[j];
+                }
+            }
+            Vector2 vec = closestUnit.position - ownUnits[i].position;
+            print(closestUnit.transform.name);
+            bool moved = false;
+            if (vec.x > 0) {
+                moved = ownUnits[i].Right();
+            }
+            else if (vec.x < 0) {
+                moved = ownUnits[i].Left();
+            }
+            if (!moved) {
+                if (vec.y > 0) {
+                    moved = ownUnits[i].Back();
+                }
+                else if (vec.y < 0) {
+                    moved = ownUnits[i].Forward();
+                }
+            }
         }
         //field.tiles[column, 0].transform.position += new Vector3(0,1,0);
 
@@ -105,6 +124,28 @@ public class AI : MonoBehaviour {
                 }
             }
         }
+        CalculateThreat();
         return false;
     }
+
+    List<Unit> CalculateThreat() {
+        for (int i = 0; i < playerUnits.Count; i++) {
+            playerUnits[i].threat = playerUnits[i].value * Mathf.Pow((7 - playerUnits[i].position.y), 2);
+            float dist = 0;
+            for (int j = 0; j < ownUnits.Count; j++) {
+                dist = Mathf.Pow(10 - Vector2.Distance(playerUnits[i].position, ownUnits[j].position), 1.15f);
+                playerUnits[i].threat -= dist; //plus ownUnits[j].value modified by some value
+            }
+
+            /*
+            if (playerUnits[i].threat > targetThreat) {
+                target = playerUnits[i];
+                targetThreat = target.threat;
+            }
+            */
+        }
+        List<Unit> rtn = CardSort.QuickSort(playerUnits.ConvertAll(x => (Card)x), 0, playerUnits.Count - 1).ConvertAll(x => (Unit)x);
+        return rtn;
+    }
 }
+
