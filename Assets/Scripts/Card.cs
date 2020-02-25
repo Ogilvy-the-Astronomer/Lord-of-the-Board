@@ -16,7 +16,7 @@ abstract public class Card : MonoBehaviour {
     // Use this for initialization
     virtual protected void Start () {
         for (int i = 0; i < transform.childCount; i++) {
-            transform.GetChild(i).gameObject.SetActive(onField);
+            if(!transform.GetChild(i).GetComponent<TextMesh>() || !transform.GetComponent<Card>().playerOwned) transform.GetChild(i).gameObject.SetActive(onField);
         }
         //print(transform.childCount);
 

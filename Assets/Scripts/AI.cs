@@ -6,15 +6,14 @@ public class AI : MonoBehaviour {
     [SerializeField]
     Field field;
 
-    [SerializeField]
-    List<Unit> playerUnits;
+    public List<Unit> playerUnits;
 
-    [SerializeField]
-    List<Unit> ownUnits;
+    public List<Unit> ownUnits;
 
+    public List<Card> deck;
     public List<Card> Hand;
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -30,6 +29,7 @@ public class AI : MonoBehaviour {
         float targetThreat = -1000;
         Unit[] units = Object.FindObjectsOfType<Unit>();
         //print(units.Length);
+        Draw();
         for (int i = 0; i < units.Length; i++) {
             if (units[i].onField) {
                 if (units[i].playerOwned) {
@@ -41,7 +41,7 @@ public class AI : MonoBehaviour {
             }
         }
         playerUnits = CalculateThreat();
-        target = playerUnits[0];
+        if(playerUnits.Count > 0) target = playerUnits[0];
         int column = 3;
         if(target) column = (int)target.position.x;
         int cardToSummon = 0;
@@ -60,12 +60,13 @@ public class AI : MonoBehaviour {
         for (int i = 0; i < ownUnits.Count; i++) {
             Unit closestUnit = playerUnits[0];
             float closestDistance = 1000;
-            float dist = -1;
+            float dist = 1000;
             for (int j = 0; j < playerUnits.Count; j++) {
                 dist = Vector2.Distance(ownUnits[i].position, playerUnits[j].position);
-                if (dist <= 1) continue;
-                else if (dist < closestDistance) {
-                    dist = closestDistance;
+                //print(dist);
+                //if (dist <= 1) continue;
+                if (dist < closestDistance) {
+                    closestDistance = dist;
                     closestUnit = playerUnits[j];
                 }
             }
@@ -86,11 +87,24 @@ public class AI : MonoBehaviour {
                     moved = ownUnits[i].Forward();
                 }
             }
+            if (Vector2.Distance(ownUnits[i].position, closestUnit.position) <= 1.0f) {
+                ownUnits[i].Attack(closestUnit);
+            }
         }
         //field.tiles[column, 0].transform.position += new Vector3(0,1,0);
 
     }
-
+    public void Draw() {
+        if (deck.Count > 0) {
+            GameObject drawnCard = deck[0].gameObject;
+            Hand.Add(deck[0]);
+            deck.RemoveAt(0);
+            float space = 7f / Hand.Count;
+            for (int i = 0; i < Hand.Count; i++) {
+                Hand[i].transform.localPosition = new Vector3(3f - (Hand.Count * 0.3f) + (space * i), 0, 0);
+            }
+        }
+    }
     bool Summon(int handIndex, int column) {
         if (!field.tiles[column, 0].GetComponent<TileScript>().occupier) {
             Hand[handIndex].playerOwned = false;
