@@ -6,6 +6,9 @@ public class AI : MonoBehaviour {
     [SerializeField]
     Field field;
 
+    public Avatar avatar;
+    public Avatar playerAvatar;
+
     public List<Unit> playerUnits;
 
     public List<Unit> ownUnits;
@@ -14,7 +17,15 @@ public class AI : MonoBehaviour {
     public List<Card> Hand;
     // Use this for initialization
     void Start () {
-		
+        Avatar[] avatars = FindObjectsOfType<Avatar>();
+        if (avatars[0].playerOwned) {
+            playerAvatar = avatars[0];
+            avatar = avatars[1];
+        }
+        else {
+            avatar = avatars[0];
+            playerAvatar = avatars[1];
+        }
 	}
 	
 	// Update is called once per frame
@@ -26,7 +37,7 @@ public class AI : MonoBehaviour {
         playerUnits.Clear();
         ownUnits.Clear();
         Unit target = null;
-        float targetThreat = -1000;
+        //float targetThreat = -1000;
         Unit[] units = Object.FindObjectsOfType<Unit>();
         //print(units.Length);
         Draw();
@@ -42,13 +53,13 @@ public class AI : MonoBehaviour {
         }
         playerUnits = CalculateThreat();
         if(playerUnits.Count > 0) target = playerUnits[0];
-        int column = 3;
+        int column = (int)playerAvatar.position.x;
         if(target) column = (int)target.position.x;
         int cardToSummon = 0;
         float highestValue = -1;
         if (Hand.Count > 0) {
             for (int i = 0; i < Hand.Count; i++) {
-                if (Hand[i].GetComponent<Unit>().value > highestValue) {
+                if (Hand[i].GetComponent<Unit>() && Hand[i].GetComponent<Unit>().value > highestValue) {
                     cardToSummon = i;
                     highestValue = Hand[i].GetComponent<Unit>().value;
                 }
@@ -71,7 +82,7 @@ public class AI : MonoBehaviour {
                 }
             }
             Vector2 vec = closestUnit.position - ownUnits[i].position;
-            print(closestUnit.transform.name);
+            //print(closestUnit.transform.name);
             bool moved = false;
             if (vec.x > 0) {
                 moved = ownUnits[i].Right();
@@ -108,7 +119,7 @@ public class AI : MonoBehaviour {
     bool Summon(int handIndex, int column) {
         if (!field.tiles[column, 0].GetComponent<TileScript>().occupier) {
             Hand[handIndex].playerOwned = false;
-            Hand[handIndex].Summon(new Vector3(column, 0));
+            Hand[handIndex].Play(new Vector3(column, 0));
             Hand.RemoveAt(handIndex);
             return true;
         }
@@ -122,7 +133,7 @@ public class AI : MonoBehaviour {
                 if (lower < 0) lower = 0;
                 if (!field.tiles[upper, 0].GetComponent<TileScript>().occupier) {
                     Hand[handIndex].playerOwned = false;
-                    Hand[handIndex].Summon(new Vector3(upper, 0));
+                    Hand[handIndex].Play(new Vector3(upper, 0));
                     Hand.RemoveAt(handIndex);
 
                     i = 7;
@@ -130,7 +141,7 @@ public class AI : MonoBehaviour {
                 }
                 else if (!field.tiles[lower, 0].GetComponent<TileScript>().occupier) {
                     Hand[handIndex].playerOwned = false;
-                    Hand[handIndex].Summon(new Vector3(lower, 0));
+                    Hand[handIndex].Play(new Vector3(lower, 0));
                     Hand.RemoveAt(handIndex);
 
                     i = 7;

@@ -186,8 +186,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 16, z: 1}
-  m_Center: {x: 0, y: 7.5, z: 0}
+  m_Size: {x: 1, y: 4, z: 1}
+  m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!114 &5269157752179649355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,9 +205,11 @@ MonoBehaviour:
   threat: 0
   value: 0
   playerOwned: 0
-  position: {x: 3, y: 6}
   damage: 1
-  health: 1
+  health: 0
+  <MaxHealth>k__BackingField: 3
+  position: {x: 3, y: 6}
+  enhancement: {fileID: 0}
   healthMesh: {fileID: 8362236716144443403}
   attackMesh: {fileID: 5760435099711211241}
 --- !u!1 &8127842928187228209

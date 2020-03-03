@@ -19,9 +19,13 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (heldCard) {
-            heldCard.transform.position = GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
+            heldCard.transform.position = transform.position + GetComponent<Camera>().ScreenPointToRay(Input.mousePosition).direction * 3.0f;
             if (Input.GetMouseButtonDown(0)) {
-                Summon();
+                Play();
+            }
+            else if (Input.GetMouseButtonDown(1)) {
+                heldCard = null;
+                OrganizeHand();
             }
         }
 
@@ -36,6 +40,8 @@ public class Player : MonoBehaviour {
                         }
                         else {
                             heldCard = hit.transform.gameObject;
+                            currentObject = null;
+                            OrganizeHand();
                         }
                     }
                     else {
@@ -55,21 +61,59 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void Summon() {
-        RaycastHit hit;
-        LayerMask mask = ~(LayerMask.NameToLayer("Card"));
-        if (Physics.Raycast(GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit)) {
-            TileScript hitTile = hit.transform.GetComponent<TileScript>();
-            if (hitTile) {
-                if (hitTile.spawnPoint) {
-                    for (int i = 0; i < Hand.Count; i++) {
-                        if (Hand[i] == heldCard.GetComponent<Card>()) {
-                            Hand.RemoveAt(i);
-                            i = Hand.Count + 1;
+    void Play() {
+        if (heldCard.GetComponent<Unit>()) {
+            RaycastHit hit;
+            LayerMask mask = ~(1 << LayerMask.NameToLayer("Card"));
+            if (Physics.Raycast(GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit, 100.0f, mask)) {
+                TileScript hitTile = hit.transform.GetComponent<TileScript>();
+                //print(hit.transform.name);
+                if (hitTile) {
+                    if (hitTile.spawnPoint) {
+                        for (int i = 0; i < Hand.Count; i++) {
+                            if (Hand[i] == heldCard.GetComponent<Card>()) {
+                                Hand.RemoveAt(i);
+                                i = Hand.Count + 1;
+                            }
                         }
+                        heldCard.GetComponent<Card>().Play(hitTile.position);
+                        heldCard = null;
                     }
-                    heldCard.GetComponent<Card>().Summon(hitTile.position);
-                    heldCard = null;
+                }
+            }
+        }
+        else if (heldCard.GetComponent<Spell>()) {
+            if (heldCard.GetComponent<Spell>().AcivateConditions) {
+                heldCard.GetComponent<Spell>().Play();
+                for (int i = 0; i < Hand.Count; i++) {
+                    if (Hand[i] == heldCard.GetComponent<Card>()) {
+                        Hand.RemoveAt(i);
+                        i = Hand.Count + 1;
+                    }
+                }
+                heldCard.transform.Translate(0, 500, 0);
+                heldCard = null;
+            }
+        }
+        else if (heldCard.GetComponent<Enhancement>()) {
+            RaycastHit hit;
+            LayerMask mask = (1 << LayerMask.NameToLayer("Card"));
+            Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+            ray.origin += ray.direction * 3.1f;
+            if (Physics.Raycast(ray, out hit, 100.0f, mask)) {
+                Unit hitUnit = hit.transform.GetComponent<Unit>();
+                print(hit.transform.name);
+                if (hitUnit) {
+                    if (!hitUnit.enhancement) {
+                        for (int i = 0; i < Hand.Count; i++) {
+                            if (Hand[i] == heldCard.GetComponent<Card>()) {
+                                Hand.RemoveAt(i);
+                                i = Hand.Count + 1;
+                            }
+                        }
+                        heldCard.GetComponent<Card>().Play(hitUnit.position);
+                        heldCard = null;
+                    }
                 }
             }
         }
@@ -80,10 +124,14 @@ public class Player : MonoBehaviour {
             GameObject drawnCard = deck[0].gameObject;
             Hand.Add(deck[0]);
             deck.RemoveAt(0);
-            float space = 7f / Hand.Count;
-            for (int i = 0; i < Hand.Count; i++) {
-                Hand[i].transform.localPosition = new Vector3(3f - (Hand.Count * 0.3f) + (space * i), 0, 0);
-            }
+            OrganizeHand();
+        }
+    }
+
+    public void OrganizeHand() {
+        float space = 7f / Hand.Count;
+        for (int i = 0; i < Hand.Count; i++) {
+            Hand[i].transform.localPosition = new Vector3(3f - (Hand.Count * 0.3f) + (space * i), 0, 0);
         }
     }
 

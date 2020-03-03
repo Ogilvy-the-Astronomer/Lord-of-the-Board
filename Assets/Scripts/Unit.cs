@@ -4,31 +4,45 @@ using UnityEngine;
 
 public class Unit : Card {
     public int damage;
+    private int baseDamage;
     public int health;
+    [field: SerializeField]
+    public int MaxHealth { get; private set; }
+
+    public Vector2 position;
+
+    public Enhancement enhancement;
 
     [SerializeField]
-    TextMesh healthMesh;
+    protected TextMesh healthMesh;
 
     [SerializeField]
-    TextMesh attackMesh;
+    protected TextMesh attackMesh;
 
     // Use this for initialization
     override protected void Start () {
+        baseDamage = damage;
         base.Start();
-        value = damage * health;
+        health = MaxHealth;
+        value = damage * MaxHealth;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        if (transform.position.y < -100) {
+	protected override void Update () {
+        if (transform.position.y < -10) {
             Move();
         }
         healthMesh.text = health.ToString();
         attackMesh.text = damage.ToString();
+        base.Update();
     }
 
-    override public void Move() {
-        base.Move();
+
+    public void Move() {
+        transform.position = field.tiles[(int)position.x, (int)position.y].transform.position;
+        transform.position -= new Vector3(0, transform.position.y + 0.75f, 0);
+        //threat = value * Mathf.Pow((7 - position.y), 2);
+        field.tiles[(int)position.x, (int)position.y].GetComponent<TileScript>().occupier = this;
     }
 
     public void Attack(Unit enemy) {
@@ -40,6 +54,20 @@ public class Unit : Card {
         health -= _damage;
         if (health < 1) {
             Destroy(gameObject);
+        }
+        
+    }
+
+    public override void Play(Vector2 _position) {
+        base.Play(_position);
+        field.cards.Add(this);
+        position = _position;
+        onField = true;
+        Unit thisUnit = GetComponent<Unit>();
+        field.tiles[(int)position.x, (int)position.y].GetComponent<TileScript>().occupier = thisUnit;
+        Move();
+        for (int i = 0; i < transform.childCount; i++) {
+            transform.GetChild(i).gameObject.SetActive(onField);
         }
     }
 
