@@ -2,41 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Unit : Card {
-    public int damage;
-    private int baseDamage;
+public class Structure : Card {
+
     public int health;
     [field: SerializeField]
     public int MaxHealth { get; private set; }
 
     public Vector2 position;
 
-    public Enhancement enhancement;
-
     [SerializeField]
     protected TextMesh healthMesh;
-
-    [SerializeField]
-    protected TextMesh attackMesh;
-
-    // Use this for initialization
-    override protected void Start () {
-        baseDamage = damage;
+    // Start is called before the first frame update
+    override protected void Start() {
         base.Start();
         health = MaxHealth;
-        value = damage * MaxHealth;
-	}
-	
-	// Update is called once per frame
-	protected override void Update () {
+        value = MaxHealth;
+    }
+
+    // Update is called once per frame
+    override protected void Update(){
         if (transform.position.y < -10) {
             Move();
         }
         healthMesh.text = health.ToString();
-        attackMesh.text = damage.ToString();
         base.Update();
     }
-
 
     public void Move() {
         transform.position = field.tiles[(int)position.x, (int)position.y].transform.position;
@@ -45,17 +35,12 @@ public class Unit : Card {
         field.tiles[(int)position.x, (int)position.y].GetComponent<TileScript>().occupier = this;
     }
 
-    public void Attack(Unit enemy) {
-        enemy.TakeDamage(damage);
-        print(transform.name + " attacks " + enemy.transform.name);
-    }
-
     public void TakeDamage(int _damage) {
         health -= _damage;
         if (health < 1) {
             Destroy(gameObject);
         }
-        
+
     }
 
     public override void Play(Vector2 _position) {
@@ -94,50 +79,5 @@ public class Unit : Card {
             }
         }
         Destroy(this);
-    }
-
-    public bool Forward() {
-        if (!field.tiles[(int)position.x, (int)position.y - 1].GetComponent<TileScript>().occupier) {
-            field.tiles[(int)position.x, (int)position.y].GetComponent<TileScript>().occupier = null;
-            if (position.y > 0) {
-                position.y--;
-                Move();
-                return true;
-            }
-        }
-        return false;
-    }
-    public bool Back() {
-        if (!field.tiles[(int)position.x, (int)position.y + 1].GetComponent<TileScript>().occupier) {
-            field.tiles[(int)position.x, (int)position.y].GetComponent<TileScript>().occupier = null;
-            if (position.y < 6) {
-                position.y++;
-                Move();
-                return true;
-            }
-        }
-        return false;
-    }
-    public bool Right() {
-        if (!field.tiles[(int)position.x + 1, (int)position.y].GetComponent<TileScript>().occupier) {
-            field.tiles[(int)position.x, (int)position.y].GetComponent<TileScript>().occupier = null;
-            if (position.x < 6) {
-                position.x++;
-                Move();
-                return true;
-            }
-        }
-        return false;
-    }
-    public bool Left() {
-        if (!field.tiles[(int)position.x - 1, (int)position.y].GetComponent<TileScript>().occupier) {
-            field.tiles[(int)position.x, (int)position.y].GetComponent<TileScript>().occupier = null;
-            if (position.x > 0) {
-                position.x--;
-                Move();
-                return true;
-            }
-        }
-        return false;
     }
 }

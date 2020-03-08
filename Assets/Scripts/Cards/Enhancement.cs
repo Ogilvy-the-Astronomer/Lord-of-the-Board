@@ -29,5 +29,18 @@ public class Enhancement : Card{
         host.damage += AttackBoost;
         host.health += HealthBoost;
         host.enhancement = this;
+        GetComponent<BoxCollider>().enabled = false;
+    }
+
+    public void Destroy() {
+        print("enhancement destroyed");
+        for (int i = 0; i < field.cards.Count; i++) {
+            if (field.cards[i] == gameObject.GetComponent<Card>()) {
+                field.cards.RemoveAt(i);
+            }
+        }
+        onField = false;
+        if (ability) ability.OnDestroy();
+        if (!onField) Destroy(gameObject);
     }
 }

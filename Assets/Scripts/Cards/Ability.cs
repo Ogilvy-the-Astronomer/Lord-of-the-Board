@@ -30,7 +30,27 @@ public abstract class Ability : MonoBehaviour{
 
     }
 
+    public virtual void OnOwnTurnStart() {
+
+    }
+
+    public virtual void OnOwnTurnEnd() {
+
+    }
+
+    public virtual void OnOtherTurnStart() {
+
+    }
+
+    public virtual void OnOtherTurnEnd() {
+
+    }
+
     public virtual void OnPlay() {
+
+    }
+
+    public virtual void OnDestroy() {
 
     }
 

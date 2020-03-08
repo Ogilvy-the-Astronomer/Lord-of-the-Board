@@ -15,7 +15,6 @@ abstract public class Card : MonoBehaviour {
     public Ability ability;
     public bool AcivateConditions { get; protected set; }
 
-    //public Vector2 position;
     // Use this for initialization
     protected virtual void Start () {
         for (int i = 0; i < transform.childCount; i++) {
@@ -29,15 +28,6 @@ abstract public class Card : MonoBehaviour {
 	protected virtual void Update () {
         if(ability) AcivateConditions = ability.activateConditions;
     }
-
-    /*
-    public virtual void Move() {
-        transform.position = field.tiles[(int)position.x, (int)position.y].transform.position;
-        transform.position -= new Vector3(0, transform.position.y + 0.75f, 0);
-        //threat = value * Mathf.Pow((7 - position.y), 2);
-        field.tiles[(int)position.x, (int)position.y].GetComponent<TileScript>().occupier = this;
-    }
-    */
 
     public virtual void Play(Vector2 _position) {
         Play();

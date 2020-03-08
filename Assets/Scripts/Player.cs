@@ -11,6 +11,8 @@ public class Player : MonoBehaviour {
     public List<Card> deck;
     public List<Card> Hand;
     public GameObject heldCard;
+
+    public List<Unit> units;
 	// Use this for initialization
 	void Start () {
         field = Object.FindObjectOfType<Field>();
@@ -61,23 +63,60 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void StartTurn() {
+        //print("Start player turn");
+        units.Clear();
+        Unit[] unitsArray = FindObjectsOfType<Unit>();
+        for (int i = 0; i < unitsArray.Length; i++) {
+            if (unitsArray[i].playerOwned && unitsArray[i].onField) {
+                units.Add(unitsArray[i]);
+                unitsArray[i].moveCount = 0;
+            }
+        }
+    }
+
+    public void EndTurn() {
+
+    }
+
     void Play() {
         if (heldCard.GetComponent<Unit>()) {
             RaycastHit hit;
             LayerMask mask = ~(1 << LayerMask.NameToLayer("Card"));
             if (Physics.Raycast(GetComponent<Camera>().ScreenPointToRay(Input.mousePosition), out hit, 100.0f, mask)) {
                 TileScript hitTile = hit.transform.GetComponent<TileScript>();
-                //print(hit.transform.name);
                 if (hitTile) {
-                    if (hitTile.spawnPoint) {
-                        for (int i = 0; i < Hand.Count; i++) {
-                            if (Hand[i] == heldCard.GetComponent<Card>()) {
-                                Hand.RemoveAt(i);
-                                i = Hand.Count + 1;
+                    if (heldCard.GetComponent<Unit>().IsStructure) {
+                        //do this better >:(
+                        Unit[] unitsArray = FindObjectsOfType<Unit>();
+                        for (int i = 0; i < unitsArray.Length; i++) {
+                            if (unitsArray[i].playerOwned && Vector2.Distance(hitTile.position, unitsArray[i].position) == 1) {
+                                for (int j = 0; j < Hand.Count; j++) {
+                                    if (Hand[j] == heldCard.GetComponent<Card>()) {
+                                        units.Add(Hand[j].GetComponent<Unit>());
+                                        Hand.RemoveAt(j);                                        
+                                        j = Hand.Count + 1;
+                                    }
+                                }
+                                heldCard.GetComponent<Card>().Play(hitTile.position);
+                                heldCard = null;
+                                i = unitsArray.Length + 1;
                             }
                         }
-                        heldCard.GetComponent<Card>().Play(hitTile.position);
-                        heldCard = null;
+                        
+                    }
+                    else {
+                        if (hitTile.spawnPoint) {
+                            for (int i = 0; i < Hand.Count; i++) {
+                                if (Hand[i] == heldCard.GetComponent<Card>()) {
+                                    units.Add(Hand[i].GetComponent<Unit>());
+                                    Hand.RemoveAt(i);
+                                    i = Hand.Count + 1;
+                                }
+                            }
+                            heldCard.GetComponent<Card>().Play(hitTile.position);
+                            heldCard = null;
+                        }
                     }
                 }
             }

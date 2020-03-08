@@ -205,9 +205,14 @@ MonoBehaviour:
   threat: 0
   value: 0
   playerOwned: 0
+  ability: {fileID: 0}
+  <IsStructure>k__BackingField: 0
   damage: 1
+  baseDamage: 3
   health: 0
   <MaxHealth>k__BackingField: 3
+  Movespeed: 1
+  moveCount: 0
   position: {x: 3, y: 6}
   enhancement: {fileID: 0}
   healthMesh: {fileID: 8362236716144443403}

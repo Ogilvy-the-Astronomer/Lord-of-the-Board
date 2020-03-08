@@ -33,7 +33,7 @@ public class AI : MonoBehaviour {
 		
 	}
 
-    public void Turn() {
+    public void StartTurn() {
         playerUnits.Clear();
         ownUnits.Clear();
         Unit target = null;
@@ -48,6 +48,7 @@ public class AI : MonoBehaviour {
                 }
                 else {
                     ownUnits.Add(units[i]);
+                    units[i].moveCount = 0;
                 }
             }
         }
@@ -103,6 +104,7 @@ public class AI : MonoBehaviour {
             }
         }
         //field.tiles[column, 0].transform.position += new Vector3(0,1,0);
+        FindObjectOfType<TurnController>().EndTurn();
 
     }
     public void Draw() {
@@ -143,7 +145,7 @@ public class AI : MonoBehaviour {
                     Hand[handIndex].playerOwned = false;
                     Hand[handIndex].Play(new Vector3(lower, 0));
                     Hand.RemoveAt(handIndex);
-
+                    ownUnits.Add(Hand[handIndex].GetComponent<Unit>());
                     i = 7;
                     return true;
                 }
@@ -151,6 +153,9 @@ public class AI : MonoBehaviour {
         }
         CalculateThreat();
         return false;
+    }
+    public void EndTurn() {
+
     }
 
     List<Unit> CalculateThreat() {
