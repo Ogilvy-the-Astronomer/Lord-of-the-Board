@@ -6,7 +6,7 @@ public abstract class Ability : MonoBehaviour{
     public bool activateConditions;
 
     protected Field field;
-
+    public Card parent;
     // Start is called before the first frame update
     protected virtual void Start() {
         field = FindObjectOfType<Field>();
@@ -17,6 +17,7 @@ public abstract class Ability : MonoBehaviour{
     protected virtual void Update() {
         
     }
+    public abstract int UtilityFunction();
 
     public virtual void Activate() {
 

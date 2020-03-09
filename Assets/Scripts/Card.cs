@@ -20,6 +20,9 @@ abstract public class Card : MonoBehaviour {
         for (int i = 0; i < transform.childCount; i++) {
             if(!transform.GetChild(i).GetComponent<TextMesh>() || !transform.GetComponent<Card>().playerOwned) transform.GetChild(i).gameObject.SetActive(onField);
         }
+        if (ability) {
+            ability.parent = this;
+        }
         //print(transform.childCount);
 
     }
@@ -36,4 +39,6 @@ abstract public class Card : MonoBehaviour {
     public virtual void Play() {
 
     }
+
+    public abstract int UtilityFunction();
 }

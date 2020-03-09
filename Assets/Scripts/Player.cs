@@ -2,17 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
+public class Player : Participant {
     [SerializeField]
     GameObject currentObject;
-
-    Field field;
-
-    public List<Card> deck;
-    public List<Card> Hand;
     public GameObject heldCard;
 
-    public List<Unit> units;
 	// Use this for initialization
 	void Start () {
         field = Object.FindObjectOfType<Field>();
@@ -63,22 +57,6 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public void StartTurn() {
-        //print("Start player turn");
-        units.Clear();
-        Unit[] unitsArray = FindObjectsOfType<Unit>();
-        for (int i = 0; i < unitsArray.Length; i++) {
-            if (unitsArray[i].playerOwned && unitsArray[i].onField) {
-                units.Add(unitsArray[i]);
-                unitsArray[i].moveCount = 0;
-            }
-        }
-    }
-
-    public void EndTurn() {
-
-    }
-
     void Play() {
         if (heldCard.GetComponent<Unit>()) {
             RaycastHit hit;
@@ -93,7 +71,7 @@ public class Player : MonoBehaviour {
                             if (unitsArray[i].playerOwned && Vector2.Distance(hitTile.position, unitsArray[i].position) == 1) {
                                 for (int j = 0; j < Hand.Count; j++) {
                                     if (Hand[j] == heldCard.GetComponent<Card>()) {
-                                        units.Add(Hand[j].GetComponent<Unit>());
+                                        ownUnits.Add(Hand[j].GetComponent<Unit>());
                                         Hand.RemoveAt(j);                                        
                                         j = Hand.Count + 1;
                                     }
@@ -109,7 +87,7 @@ public class Player : MonoBehaviour {
                         if (hitTile.spawnPoint) {
                             for (int i = 0; i < Hand.Count; i++) {
                                 if (Hand[i] == heldCard.GetComponent<Card>()) {
-                                    units.Add(Hand[i].GetComponent<Unit>());
+                                    ownUnits.Add(Hand[i].GetComponent<Unit>());
                                     Hand.RemoveAt(i);
                                     i = Hand.Count + 1;
                                 }
@@ -158,20 +136,8 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public void Draw() {
-        if (deck.Count > 0) {
-            GameObject drawnCard = deck[0].gameObject;
-            Hand.Add(deck[0]);
-            deck.RemoveAt(0);
-            OrganizeHand();
-        }
-    }
-
-    public void OrganizeHand() {
-        float space = 7f / Hand.Count;
-        for (int i = 0; i < Hand.Count; i++) {
-            Hand[i].transform.localPosition = new Vector3(3f - (Hand.Count * 0.3f) + (space * i), 0, 0);
-        }
+    public override void Draw() {
+        base.Draw();
     }
 
     public void Attack() {

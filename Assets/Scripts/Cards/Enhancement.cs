@@ -43,4 +43,8 @@ public class Enhancement : Card{
         if (ability) ability.OnDestroy();
         if (!onField) Destroy(gameObject);
     }
+
+    public override int UtilityFunction() {
+        return 0;
+    }
 }

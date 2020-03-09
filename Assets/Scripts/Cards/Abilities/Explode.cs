@@ -25,4 +25,8 @@ public class Explode : Ability {
             }
         }
     }
+
+    public override int UtilityFunction() {
+        return 1;
+    }
 }

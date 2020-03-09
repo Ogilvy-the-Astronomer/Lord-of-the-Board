@@ -9,7 +9,7 @@ public class TurnController : MonoBehaviour {
     Player player;
 
     [field: SerializeField]
-    public bool playerTurn { get; private set; }
+    public bool PlayerTurn { get; private set; }
     // Start is called before the first frame update
     void Start(){
         ai = FindObjectOfType<AI>();
@@ -22,7 +22,7 @@ public class TurnController : MonoBehaviour {
     }
 
     public void EndTurn() {
-        if (playerTurn) {
+        if (PlayerTurn) {
             player.EndTurn();
         }
         else {
@@ -33,7 +33,7 @@ public class TurnController : MonoBehaviour {
         for (int i = 0; i < abilities.Length; i++) {
             if (abilities[i].GetComponent<Card>().onField) {
                 abilities[i].OnTurnEnd();
-                if (abilities[i].GetComponent<Card>().playerOwned == playerTurn) {
+                if (abilities[i].GetComponent<Card>().playerOwned == PlayerTurn) {
                     abilities[i].OnOwnTurnEnd();
                 }
                 else {
@@ -41,13 +41,13 @@ public class TurnController : MonoBehaviour {
                 }
             }
         }
-        playerTurn = !playerTurn;
+        PlayerTurn = !PlayerTurn;
         StartNextTurn();
     }
 
 
     void StartNextTurn() {
-        if (playerTurn) {
+        if (PlayerTurn) {
             player.StartTurn();
         }
         else {
@@ -57,7 +57,7 @@ public class TurnController : MonoBehaviour {
         for (int i = 0; i < abilities.Length; i++) {
             if (abilities[i].GetComponent<Card>().onField) {
                 abilities[i].OnTurnStart();
-                if (abilities[i].GetComponent<Card>().playerOwned == playerTurn) {
+                if (abilities[i].GetComponent<Card>().playerOwned == PlayerTurn) {
                     abilities[i].OnOwnTurnStart();
                 }
                 else {

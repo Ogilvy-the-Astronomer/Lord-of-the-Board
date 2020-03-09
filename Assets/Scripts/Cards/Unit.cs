@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Unit : Card {
     [field: SerializeField]
-    public bool IsStructure { get; private set; }
+    public bool IsStructure { get; protected set; }
     public int damage;
     [SerializeField]
-    private int baseDamage;
+    protected int baseDamage;
     public int health;
     [field: SerializeField]
-    public int MaxHealth { get; private set; }
+    public int MaxHealth { get; protected set; }
     public int Movespeed;
     public int moveCount;
 
@@ -28,15 +28,17 @@ public class Unit : Card {
     override protected void Start () {
         base.Start();
         health = MaxHealth;
+        damage = baseDamage;
         if (IsStructure) {
             baseDamage = 0;
+            damage = 0;
             value = MaxHealth;
             Movespeed = 0;
         }
         else {
-            value = damage * MaxHealth;
+            value = damage + MaxHealth;
         }
-        damage = baseDamage;
+        
     }
 	
 	// Update is called once per frame
@@ -49,6 +51,17 @@ public class Unit : Card {
         base.Update();
     }
 
+    public override int UtilityFunction() {
+        value = MaxHealth;
+        if (IsStructure) {
+            value += damage;
+        }
+        try {
+            value += ability.UtilityFunction();
+        }
+        catch { }
+        return (int)value;
+    }
 
     public void Move() {
         transform.position = field.tiles[(int)position.x, (int)position.y].transform.position;
@@ -97,9 +110,9 @@ public class Unit : Card {
                     ai.playerUnits.RemoveAt(i);
                 }
             }
-            for (int i = 0; i < player.units.Count; i++) {
-                if (player.units[i] == gameObject.GetComponent<Card>()) {
-                    player.units.RemoveAt(i);
+            for (int i = 0; i < player.ownUnits.Count; i++) {
+                if (player.ownUnits[i] == gameObject.GetComponent<Card>()) {
+                    player.ownUnits.RemoveAt(i);
                 }
             }
         }

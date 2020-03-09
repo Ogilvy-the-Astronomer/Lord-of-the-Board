@@ -2,19 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AI : MonoBehaviour {
-    [SerializeField]
-    Field field;
-
+public class AI : Participant {
     public Avatar avatar;
     public Avatar playerAvatar;
 
     public List<Unit> playerUnits;
-
-    public List<Unit> ownUnits;
-
-    public List<Card> deck;
-    public List<Card> Hand;
     // Use this for initialization
     void Start () {
         Avatar[] avatars = FindObjectsOfType<Avatar>();
@@ -33,9 +25,9 @@ public class AI : MonoBehaviour {
 		
 	}
 
-    public void StartTurn() {
+    override public void StartTurn() {
+        base.StartTurn();
         playerUnits.Clear();
-        ownUnits.Clear();
         Unit target = null;
         //float targetThreat = -1000;
         Unit[] units = Object.FindObjectsOfType<Unit>();
@@ -47,8 +39,7 @@ public class AI : MonoBehaviour {
                     playerUnits.Add(units[i]);
                 }
                 else {
-                    ownUnits.Add(units[i]);
-                    units[i].moveCount = 0;
+                    //do stuff to own fielded units
                 }
             }
         }
@@ -56,17 +47,23 @@ public class AI : MonoBehaviour {
         if(playerUnits.Count > 0) target = playerUnits[0];
         int column = (int)playerAvatar.position.x;
         if(target) column = (int)target.position.x;
-        int cardToSummon = 0;
+        int cardToSummon = -1;
         float highestValue = -1;
         if (Hand.Count > 0) {
             for (int i = 0; i < Hand.Count; i++) {
-                if (Hand[i].GetComponent<Unit>() && Hand[i].GetComponent<Unit>().value > highestValue) {
+                Hand[i].UtilityFunction();
+                if (Hand[i].GetComponent<Unit>() 
+                    && Hand[i].GetComponent<Unit>().value > highestValue) {
                     cardToSummon = i;
                     highestValue = Hand[i].GetComponent<Unit>().value;
                 }
+                else if (Hand[i].GetComponent<Spell>() 
+                    && Hand[i].GetComponent<Spell>().ability.activateConditions 
+                    && Hand[i].GetComponent<Spell>().value > 1) {
+                    Hand[i].Play();
+                }
             }
-
-            Summon(cardToSummon, column);
+            if(cardToSummon >= 0) Summon(cardToSummon, column);
         }
 
         for (int i = 0; i < ownUnits.Count; i++) {
@@ -107,16 +104,8 @@ public class AI : MonoBehaviour {
         FindObjectOfType<TurnController>().EndTurn();
 
     }
-    public void Draw() {
-        if (deck.Count > 0) {
-            GameObject drawnCard = deck[0].gameObject;
-            Hand.Add(deck[0]);
-            deck.RemoveAt(0);
-            float space = 7f / Hand.Count;
-            for (int i = 0; i < Hand.Count; i++) {
-                Hand[i].transform.localPosition = new Vector3(3f - (Hand.Count * 0.3f) + (space * i), 0, 0);
-            }
-        }
+    public override void Draw() {
+        base.Draw();
     }
     bool Summon(int handIndex, int column) {
         if (!field.tiles[column, 0].GetComponent<TileScript>().occupier) {
@@ -154,9 +143,6 @@ public class AI : MonoBehaviour {
         CalculateThreat();
         return false;
     }
-    public void EndTurn() {
-
-    }
 
     List<Unit> CalculateThreat() {
         for (int i = 0; i < playerUnits.Count; i++) {
@@ -176,6 +162,10 @@ public class AI : MonoBehaviour {
         }
         List<Unit> rtn = CardSort.QuickSort(playerUnits.ConvertAll(x => (Card)x), 0, playerUnits.Count - 1).ConvertAll(x => (Unit)x);
         return rtn;
+    }
+
+    IEnumerator WaitThisLong(float _seconds) {
+        yield return new WaitForSeconds(_seconds);
     }
 }
 
