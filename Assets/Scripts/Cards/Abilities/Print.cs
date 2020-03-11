@@ -36,7 +36,7 @@ public class Print : Ability {
         for (int i = 0; i < ai.Hand.Count; i++) {
             britishRobot = ai.Hand[i].GetComponent<BritishRobot>();
             if (britishRobot) {
-                ai.Hand[i].value += 5;
+                ai.Hand[i].valueMod += 5;
                 rtn--;
             }
         }

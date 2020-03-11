@@ -52,6 +52,10 @@ public class AI : Participant {
         if (Hand.Count > 0) {
             for (int i = 0; i < Hand.Count; i++) {
                 Hand[i].UtilityFunction();
+            }
+            for (int i = 0; i < Hand.Count; i++) {
+                //Hand[i].UtilityFunction();
+                Hand[i].GetComponent<Card>().value += Hand[i].GetComponent<Card>().valueMod;
                 if (Hand[i].GetComponent<Unit>() 
                     && Hand[i].GetComponent<Unit>().value > highestValue) {
                     cardToSummon = i;
@@ -63,7 +67,7 @@ public class AI : Participant {
                     Hand[i].Play();
                 }
             }
-            if(cardToSummon >= 0) Summon(cardToSummon, column);
+            //if(cardToSummon >= 0 && highestValue >= 0) Summon(cardToSummon, column);
         }
 
         for (int i = 0; i < ownUnits.Count; i++) {
@@ -103,6 +107,12 @@ public class AI : Participant {
         //field.tiles[column, 0].transform.position += new Vector3(0,1,0);
         FindObjectOfType<TurnController>().EndTurn();
 
+    }
+    public override void EndTurn() {
+        base.EndTurn();
+        for (int i = 0; i < Hand.Count; i++) {
+            Hand[i].GetComponent<Card>().valueMod = 0;
+        }
     }
     public override void Draw() {
         base.Draw();
@@ -145,6 +155,23 @@ public class AI : Participant {
     }
 
     List<Unit> CalculateThreat() {
+
+        for (int y = 0; y < 7; y++) {
+            for (int x = 0; x < 7; x++) {
+                float num = 0;
+                for (int i = 0; i < field.cards.Count; i++) {
+                    if (field.cards[i].playerOwned) {
+                        num += field.cards[i].value / Vector2.Distance(field.cards[i].GetComponent<Unit>().position, field.tiles[y, x].GetComponent<TileScript>().position) + 1.0f;
+                    }
+                    else {
+                        num -= field.cards[i].value / Vector2.Distance(field.cards[i].GetComponent<Unit>().position, field.tiles[y, x].GetComponent<TileScript>().position) + 1.0f;
+                    }
+                }
+                //num = field.tiles[x, y].GetComponent<TileScript>().position.x * field.tiles[x, y].GetComponent<TileScript>().position.y;
+                field.tiles[y, x].GetComponent<TileScript>().threat = num / 5.0f;
+            }
+        }
+
         for (int i = 0; i < playerUnits.Count; i++) {
             playerUnits[i].threat = playerUnits[i].value * Mathf.Pow((7 - playerUnits[i].position.y), 2);
             float dist = 0;
@@ -160,6 +187,7 @@ public class AI : Participant {
             }
             */
         }
+
         List<Unit> rtn = CardSort.QuickSort(playerUnits.ConvertAll(x => (Card)x), 0, playerUnits.Count - 1).ConvertAll(x => (Unit)x);
         return rtn;
     }

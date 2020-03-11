@@ -10,6 +10,7 @@ abstract public class Card : MonoBehaviour {
 
     public float threat;
     public float value;
+    public float valueMod;
     public bool playerOwned;
 
     public Ability ability;
